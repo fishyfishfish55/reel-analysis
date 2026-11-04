@@ -32,47 +32,92 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          current_video: number
+          end_time: string | null
+          id: number
+          start_time: string
+        }
+        Insert: {
+          current_video?: number
+          end_time?: string | null
+          id?: number
+          start_time?: string
+        }
+        Update: {
+          current_video?: number
+          end_time?: string | null
+          id?: number
+          start_time?: string
+        }
+        Relationships: []
+      }
       participants: {
         Row: {
           consent_status: boolean | null
           email: string | null
+          event_id: number | null
           join_time: string | null
           participant_id: number
         }
         Insert: {
           consent_status?: boolean | null
           email?: string | null
+          event_id?: number | null
           join_time?: string | null
           participant_id?: number
         }
         Update: {
           consent_status?: boolean | null
           email?: string | null
+          event_id?: number | null
           join_time?: string | null
           participant_id?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "participants_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       votes: {
         Row: {
           action: Database["public"]["Enums"]["action_type"] | null
+          event_id: number | null
           participant_id: number
           timestamp: string | null
           video_id: number | null
+          vote: boolean
         }
         Insert: {
           action?: Database["public"]["Enums"]["action_type"] | null
+          event_id?: number | null
           participant_id?: number
           timestamp?: string | null
           video_id?: number | null
+          vote?: boolean
         }
         Update: {
           action?: Database["public"]["Enums"]["action_type"] | null
+          event_id?: number | null
           participant_id?: number
           timestamp?: string | null
           video_id?: number | null
+          vote?: boolean
         }
         Relationships: [
+          {
+            foreignKeyName: "votes_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "votes_participant_id_fkey"
             columns: ["participant_id"]
