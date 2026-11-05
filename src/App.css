@@ -113,6 +113,18 @@
   background: #813d29;
 }
 
+.primary-button:disabled {
+  background: #aa9288;
+  cursor: wait;
+}
+
+.form-error {
+  margin: 14px 0 0;
+  color: #a32922;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .primary-button:active,
 .primary-link:active {
   transform: translateY(1px);
@@ -191,6 +203,14 @@
   z-index: 1;
   outline: 4px solid #fffefa;
   outline-offset: -8px;
+}
+
+.vote-button:disabled {
+  cursor: wait;
+}
+
+.vote-button:disabled:not(.is-active) {
+  filter: saturate(0.7);
 }
 
 .vote-button--scroll {

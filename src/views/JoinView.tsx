@@ -1,14 +1,40 @@
-import { useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, type SyntheticEvent } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useParticipantAuth } from "../hooks/useParticipantAuth";
 
 function JoinView() {
   const [email, setEmail] = useState("");
   const [hasConsent, setHasConsent] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const {
+    session,
+    isLoading,
+    error: authError,
+    signInAnonymously,
+  } = useParticipantAuth();
 
-  function joinEvent(event: FormEvent<HTMLFormElement>) {
+  async function joinEvent(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
+    setFormError(null);
+    setIsSubmitting(true);
+    try {
+      await signInAnonymously(email);
+    } catch (error) {
+      setFormError(
+        error instanceof Error
+          ? error.message
+          : "Unable to join the event. Please try again.",
+      );
+      setIsSubmitting(false);
+      return;
+    }
     navigate("/vote");
+  }
+
+  if (session) {
+    return <Navigate to="/vote" replace />;
   }
 
   return (
@@ -43,13 +69,22 @@ function JoinView() {
               may be recorded.
             </span>
           </label>
-          <button className="primary-button" type="submit">
-            Join the event
+          <button
+            className="primary-button"
+            type="submit"
+            disabled={isLoading || isSubmitting}
+          >
+            {isSubmitting ? "Joining..." : "Join the event"}
           </button>
         </form>
+        {(formError ?? authError) && (
+          <p className="form-error" role="alert">
+            {formError ?? authError}
+          </p>
+        )}
         <p className="prototype-notice">
-          Prototype: your email and votes are not being sent to or saved in a
-          database yet.
+          Your email is stored as metadata on your anonymous participant
+          account.
         </p>
       </section>
     </main>

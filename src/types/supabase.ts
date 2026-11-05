@@ -14,29 +14,31 @@ export type Database = {
   }
   public: {
     Tables: {
-      gathering_log: {
+      event_log: {
         Row: {
-          gathering_id: number
-          participant_id: number
+          action: Database["public"]["Enums"]["action_type"] | null
+          event_id: number
+          participant_id: string | null
+          timestamp: string | null
+          video_id: number | null
         }
         Insert: {
-          gathering_id?: number
-          participant_id: number
+          action?: Database["public"]["Enums"]["action_type"] | null
+          event_id?: number
+          participant_id?: string | null
+          timestamp?: string | null
+          video_id?: number | null
         }
         Update: {
-          gathering_id?: number
-          participant_id?: number
+          action?: Database["public"]["Enums"]["action_type"] | null
+          event_id?: number
+          participant_id?: string | null
+          timestamp?: string | null
+          video_id?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "gathering_log_gathering_id_fkey"
-            columns: ["gathering_id"]
-            isOneToOne: false
-            referencedRelation: "Gatherings"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gathering_log_participant_id_fkey"
+            foreignKeyName: "event_log_participant_id_fkey"
             columns: ["participant_id"]
             isOneToOne: false
             referencedRelation: "participants"
@@ -44,7 +46,37 @@ export type Database = {
           },
         ]
       }
-      Gatherings: {
+      gathering_log: {
+        Row: {
+          gathering_id: number
+          participant_id: string
+        }
+        Insert: {
+          gathering_id?: number
+          participant_id: string
+        }
+        Update: {
+          gathering_id?: number
+          participant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gathering_log_gathering_id_fkey"
+            columns: ["gathering_id"]
+            isOneToOne: false
+            referencedRelation: "gatherings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gathering_log_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: true
+            referencedRelation: "participants"
+            referencedColumns: ["participant_id"]
+          },
+        ]
+      }
+      gatherings: {
         Row: {
           current_video: number
           end_time: string | null
@@ -70,53 +102,21 @@ export type Database = {
           consent_status: boolean | null
           email: string | null
           join_time: string | null
-          participant_id: number
-          vote: boolean | null
+          participant_id: string
         }
         Insert: {
           consent_status?: boolean | null
           email?: string | null
           join_time?: string | null
-          participant_id?: number
-          vote?: boolean | null
+          participant_id?: string
         }
         Update: {
           consent_status?: boolean | null
           email?: string | null
           join_time?: string | null
-          participant_id?: number
-          vote?: boolean | null
+          participant_id?: string
         }
         Relationships: []
-      }
-      votes: {
-        Row: {
-          action: Database["public"]["Enums"]["action_type"] | null
-          participant_id: number
-          timestamp: string | null
-          video_id: number | null
-        }
-        Insert: {
-          action?: Database["public"]["Enums"]["action_type"] | null
-          participant_id?: number
-          timestamp?: string | null
-          video_id?: number | null
-        }
-        Update: {
-          action?: Database["public"]["Enums"]["action_type"] | null
-          participant_id?: number
-          timestamp?: string | null
-          video_id?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "votes_participant_id_fkey"
-            columns: ["participant_id"]
-            isOneToOne: true
-            referencedRelation: "participants"
-            referencedColumns: ["participant_id"]
-          },
-        ]
       }
     }
     Views: {

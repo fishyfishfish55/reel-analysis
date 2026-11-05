@@ -1,34 +1,29 @@
-import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ParticipantAuthProvider } from "./components/ParticipantAuthProvider";
+import { ParticipantSessionRoutes } from "./components/ParticipantSessionRoutes";
+import { RequireParticipantAuth } from "./components/RequireParticipantAuth";
 import CompleteView from "./views/CompleteView";
 import JoinView from "./views/JoinView";
 import VoteView from "./views/VoteView";
 import "./App.css";
 
 function App() {
-  const [scrollVote, setScrollVote] = useState(false);
-  const [likeVote, setLikeVote] = useState(false);
-
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/join" replace />} />
-        <Route path="/join" element={<JoinView />} />
-        <Route
-          path="/vote"
-          element={
-            <VoteView
-              scrollVote={scrollVote}
-              likeVote={likeVote}
-              onScrollVoteChange={setScrollVote}
-              onLikeVoteChange={setLikeVote}
-            />
-          }
-        />
-        <Route path="/complete" element={<CompleteView />} />
-        <Route path="*" element={<Navigate to="/join" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <ParticipantAuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navigate to="/join" replace />} />
+          <Route path="/join" element={<JoinView />} />
+          <Route element={<RequireParticipantAuth />}>
+            <Route element={<ParticipantSessionRoutes />}>
+              <Route path="/vote" element={<VoteView />} />
+              <Route path="/complete" element={<CompleteView />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<Navigate to="/join" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ParticipantAuthProvider>
   );
 }
 
