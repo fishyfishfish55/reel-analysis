@@ -1,3 +1,11 @@
+DROP POLICY IF EXISTS
+    "authenticated users can receive"
+    ON realtime.messages;
+
+DROP POLICY IF EXISTS
+    "authenticated users can send"
+    ON realtime.messages;
+
 create policy "Authenticated participants can receive vote and reset broadcasts"
 on realtime.messages
 for select
