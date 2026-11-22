@@ -48,10 +48,20 @@ export function ParticipantAuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const signInAnonymously = useCallback(async (email: string) => {
+  const signInAnonymously = useCallback(async (email: string, hasConsent: boolean) => {
+    if (!hasConsent) {
+      throw new Error("Consent is required to join the event.");
+    }
+
     setError(null);
     const { data, error: signInError } = await supabase.auth.signInAnonymously({
-      options: { data: { email: email.trim() } },
+      options: {
+        data: {
+          email: email.trim(),
+          participant_join: true,
+          consent_status: true,
+        },
+      },
     });
 
     if (signInError) {
