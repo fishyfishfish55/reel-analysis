@@ -41,7 +41,9 @@ export function useModeratorRealtime() {
     const scrolls = supabase.channel("scrolls", {
       config: { broadcast: { ack: true }, private: true },
     });
-    const reset = supabase.channel("reset", { config: { private: true } });
+    const reset = supabase.channel("reset", {
+      config: { broadcast: { ack: true }, private: true },
+    });
     const room = supabase.channel("room", { config: { private: true } });
     channelsRef.current = { likes, scrolls, reset, room };
 

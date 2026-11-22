@@ -45,6 +45,8 @@ if this moves beyond a prototype. Disable **Allow public access** in the
 Supabase project's Realtime settings to enforce private channels.
 Apply `supabase/migrations/20261122163900_add_room_presence_policies.sql` to
 grant authenticated participants access to the `room` Presence channel.
+Apply `supabase/migrations/20261122170000_allow_authenticated_vote_resets.sql`
+if the original moderator-only reset policy was already applied remotely.
 
 Participant clients join the `room` channel with Presence metadata identifying
 them as participants. The moderator view counts unique participant Presence
