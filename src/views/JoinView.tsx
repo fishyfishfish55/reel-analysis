@@ -33,7 +33,7 @@ function JoinView() {
       if (session) {
         participantUserId = session.user.id;
       } else {
-        participantUserId = await signInAnonymously(email);
+        participantUserId = await signInAnonymously(email, hasConsent);
       }
     } catch (error) {
       setFormError(
