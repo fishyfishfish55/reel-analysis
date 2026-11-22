@@ -2,7 +2,9 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ParticipantAuthProvider } from "./components/ParticipantAuthProvider";
 import { ParticipantSessionRoutes } from "./components/ParticipantSessionRoutes";
 import { RequireParticipantAuth } from "./components/RequireParticipantAuth";
+import { RequireModeratorAuth } from "./components/RequireModeratorAuth";
 import CompleteView from "./views/CompleteView";
+import ModeratorView from "./views/ModeratorView";
 import JoinView from "./views/JoinView";
 import VoteView from "./views/VoteView";
 import "./App.css";
@@ -19,6 +21,9 @@ function App() {
               <Route path="/vote" element={<VoteView />} />
               <Route path="/complete" element={<CompleteView />} />
             </Route>
+          </Route>
+          <Route element={<RequireModeratorAuth />}>
+            <Route path="/moderator" element={<ModeratorView />} />
           </Route>
           <Route path="*" element={<Navigate to="/join" replace />} />
         </Routes>

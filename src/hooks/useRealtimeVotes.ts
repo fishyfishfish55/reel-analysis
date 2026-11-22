@@ -6,7 +6,7 @@ export type VoteAction = "like" | "scroll";
 export type VoteState = Record<VoteAction, boolean>;
 
 const INITIAL_VOTES: VoteState = { like: false, scroll: false };
-const CHANNEL_NAMES = ["likes", "scrolls", "reset"] as const;
+const CHANNEL_NAMES = ["likes", "scrolls", "reset", "room"] as const;
 
 export function useRealtimeVotes(participantId: string) {
   const [votes, setVotes] = useState<VoteState>(INITIAL_VOTES);
@@ -37,6 +37,7 @@ export function useRealtimeVotes(participantId: string) {
         config: { broadcast: { ack: true }, private: true },
       }),
       reset: supabase.channel("reset", { config: { private: true } }),
+      room: supabase.channel("room", { config: { private: true } }),
     };
     channelsRef.current = channels;
 
@@ -69,13 +70,24 @@ export function useRealtimeVotes(participantId: string) {
 
     channels.likes.subscribe((status) => handleStatus("likes", status));
     channels.scrolls.subscribe((status) => handleStatus("scrolls", status));
+    channels.room
+      .subscribe(async (status) => {
+        handleStatus("room", status);
+        if (status === "SUBSCRIBED") {
+          await channels.room.track({
+            participant_id: participantId,
+            role: "participant",
+          });
+        }
+      });
 
     return () => {
       active = false;
       channelsRef.current = {};
+      void channels.room.untrack();
       void Promise.all(Object.values(channels).map((channel) => supabase.removeChannel(channel)));
     };
-  }, [updateVotes]);
+  }, [participantId, updateVotes]);
 
   const toggleVote = useCallback(
     async (action: VoteAction) => {

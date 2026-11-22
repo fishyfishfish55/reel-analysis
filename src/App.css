@@ -118,6 +118,19 @@
   cursor: wait;
 }
 
+.moderator-id {
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #d8d0c4;
+  border-radius: 8px;
+  background: #f4f1ea;
+  color: #27231f;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
 .form-error {
   margin: 14px 0 0;
   color: #a32922;
@@ -281,9 +294,186 @@
   pointer-events: none;
 }
 
+.moderator-screen {
+  min-height: 100svh;
+  padding: clamp(24px, 5vw, 64px);
+  box-sizing: border-box;
+  background: #f6f3ed;
+}
+
+.moderator-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto 32px;
+}
+
+.moderator-header h1 {
+  margin: 0;
+  color: #27231f;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.participant-count {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: #6a6258;
+}
+
+.participant-count strong {
+  color: #27231f;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.participant-count span {
+  font-size: 0.78rem;
+}
+
+.threshold-grid {
+  display: grid;
+  max-width: 980px;
+  margin: 0 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.threshold-card {
+  min-height: 220px;
+  padding: 28px;
+  border: 1px solid #e8e2d8;
+  border-radius: 18px;
+  background: #fffefa;
+  box-shadow: 0 18px 50px rgba(48, 37, 25, 0.06);
+  box-sizing: border-box;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.threshold-card.threshold-reached {
+  border-color: #cf7a3d;
+  box-shadow: 0 18px 50px rgba(164, 79, 53, 0.16);
+  transform: translateY(-3px);
+}
+
+.threshold-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  color: #27231f;
+}
+
+.threshold-heading span {
+  font-size: 1.2rem;
+  font-weight: 750;
+}
+
+.threshold-heading strong {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -0.06em;
+}
+
+.threshold-bar {
+  height: 14px;
+  margin: 28px 0 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #ece6dc;
+}
+
+.threshold-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 180ms ease;
+}
+
+.threshold-card--scroll .threshold-bar span {
+  background: #a44f35;
+}
+
+.threshold-card--like .threshold-bar span {
+  background: #302b27;
+}
+
+.threshold-card > p {
+  color: #6a6258;
+  font-size: 0.88rem;
+}
+
+.threshold-alert {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #a44f35;
+  color: #fffefa;
+  font-weight: 750;
+  text-align: center;
+}
+
+.reset-button {
+  display: block;
+  min-width: 260px;
+  min-height: 58px;
+  margin: 24px auto 10px;
+  border: 0;
+  border-radius: 12px;
+  background: #27231f;
+  color: #fffefa;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.reset-button:hover:not(:disabled) {
+  background: #3d3630;
+}
+
+.reset-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.reset-button:focus-visible {
+  outline: 3px solid #f3b27e;
+  outline-offset: 3px;
+}
+
+.moderator-status {
+  min-height: 24px;
+  margin: 8px auto 0;
+  color: #766e64;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
 @media (max-width: 520px) {
   .join-screen {
     padding: 16px;
+  }
+
+  .moderator-screen {
+    padding: 20px 16px;
+  }
+
+  .moderator-header {
+    align-items: center;
+  }
+
+  .participant-count strong {
+    font-size: 1.8rem;
+  }
+
+  .threshold-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .threshold-card {
+    min-height: 190px;
   }
 
   .join-card {

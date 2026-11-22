@@ -5,7 +5,9 @@ export type ParticipantAuthContextValue = {
   session: Session | null;
   isLoading: boolean;
   error: string | null;
-  signInAnonymously: (email: string, hasConsent: boolean) => Promise<void>;
+  signInAnonymously: (email: string) => Promise<string>;
+  sendMagicLink: (email: string) => Promise<void>;
+  signOut: () => Promise<void>;
 };
 
 export const ParticipantAuthContext =
