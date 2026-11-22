@@ -20,7 +20,7 @@ function JoinView() {
     setFormError(null);
     setIsSubmitting(true);
     try {
-      await signInAnonymously(email);
+      await signInAnonymously(email, hasConsent);
     } catch (error) {
       setFormError(
         error instanceof Error

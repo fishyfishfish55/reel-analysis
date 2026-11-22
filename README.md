@@ -24,6 +24,10 @@ link is not configured.
 Enable anonymous sign-ins in the Supabase project's Auth settings. Participant
 emails are attached to the anonymous user's metadata and are not verified email
 identities. The `/vote` and `/complete` routes require a Supabase session.
+Apply the participant migrations in `supabase/migrations` to create a
+`participants` row for each participant who joins with consent and backfill
+existing participant sessions. Rows use the anonymous user's ID, email
+metadata, consent status, and join time.
 
 The vote view subscribes to the `likes`, `scrolls`, and `reset` Realtime
 broadcast channels. It sends `vote` events with `action`, `participant_id`,
