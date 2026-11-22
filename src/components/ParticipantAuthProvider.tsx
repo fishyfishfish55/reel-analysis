@@ -63,11 +63,46 @@ export function ParticipantAuthProvider({ children }: { children: ReactNode }) {
     }
 
     setSession(data.session);
+    return data.session.user.id;
+  }, []);
+
+  const sendMagicLink = useCallback(async (email: string) => {
+    setError(null);
+    const configuredRedirectUrl =
+      import.meta.env.VITE_MODERATOR_REDIRECT_URL?.trim();
+    const redirectUrl = new URL(
+      configuredRedirectUrl || "/moderator",
+      window.location.origin,
+    ).toString();
+
+    const { error: otpError } = await supabase.auth.signInWithOtp({
+      email: email.trim(),
+      options: {
+        emailRedirectTo: redirectUrl,
+      },
+    });
+
+    if (otpError) {
+      throw otpError;
+    }
+  }, []);
+
+  const signOut = useCallback(async () => {
+    const { error: signOutError } = await supabase.auth.signOut();
+    if (signOutError) throw signOutError;
+    setSession(null);
   }, []);
 
   const value = useMemo(
-    () => ({ session, isLoading, error, signInAnonymously }),
-    [session, isLoading, error, signInAnonymously],
+    () => ({
+      session,
+      isLoading,
+      error,
+      signInAnonymously,
+      sendMagicLink,
+      signOut,
+    }),
+    [session, isLoading, error, signInAnonymously, sendMagicLink, signOut],
   );
 
   return (
