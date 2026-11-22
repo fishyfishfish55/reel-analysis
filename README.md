@@ -43,6 +43,8 @@ channels and publish vote updates. The migration currently allows authenticated
 users to publish resets and room Presence; keep server-side moderator controls
 if this moves beyond a prototype. Disable **Allow public access** in the
 Supabase project's Realtime settings to enforce private channels.
+Apply `supabase/migrations/20261122163900_add_room_presence_policies.sql` to
+grant authenticated participants access to the `room` Presence channel.
 
 Participant clients join the `room` channel with Presence metadata identifying
 them as participants. The moderator view counts unique participant Presence
